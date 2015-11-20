@@ -89,7 +89,6 @@ gulp.task("help", function() {
             build: '构建代码',
             clean: '清理编译文件',
             img: '图片目录压缩',
-            watch: '监视代码修改',
             sync: '同步代码到开发机',
             server: '本地调试服务器',
             release: '发布',
@@ -228,7 +227,7 @@ gulp.task("clean", function() {
 /**
  * 任务: 开启本地dev服务器
  */
-gulp.task("server", function() {
+gulp.task("connect", function() {
     connect.server({
         port: 9000,
         root: '.',
@@ -240,7 +239,7 @@ gulp.task("server", function() {
 /**
  * 任务: 开启本地dev服务器，并监听scss变化,livereload
  */
-gulp.task('watch', ['server', 'watch:css']);
+gulp.task('server', ['server', 'watch:css']);
 
 
 /**
