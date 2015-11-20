@@ -85,7 +85,7 @@ gulp.task("help", function() {
     help.show('xtx v' + pkg.version, {
         "命令": {
             // init: '初始化项目',
-            pack: '打包代码',
+            // pack: '打包代码',
             build: '构建代码',
             clean: '清理编译文件',
             img: '图片目录压缩',
