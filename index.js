@@ -1,4 +1,5 @@
-var fs = require("fs"),
+var pkg = require("./package.json"),
+    fs = require("fs"),
     path = require("path"),
     gulp = require("gulp"),
     plugins = require("gulp-load-plugins")(),
@@ -12,16 +13,16 @@ var fs = require("fs"),
     pngquant = require("imagemin-pngquant"),
     rsync = require("rsync"),
     cjson = require("cjson"),
-    help = require('u-help'),
-    pkg = require("./package.json"),
+    help = require("u-help"),
+    chalk = require("chalk"),
+    prettyTime = require('pretty-hrtime'),
     sass = plugins.sass,
     sourcemaps = plugins.sourcemaps,
     autoprefixer = plugins.autoprefixer,
     uglify = plugins.uglify,
     imagemin = plugins.imagemin,
-    connect = plugins.connect
-
-
+    connect = plugins.connect,
+    gutil = plugins.util
 
 /**
  * 配置
@@ -127,7 +128,6 @@ gulp.task("build:css", function() {
         .pipe(connect.reload())
 })
 
-
 /**
  * 任务: 编译js文件
  */
@@ -221,7 +221,7 @@ gulp.task("clean", function() {
         config.build,
         config.jsDist,
         config.cssDist
-    ]);
+    ])
 })
 
 /**
@@ -301,7 +301,19 @@ gulp.task("sync", function() {
         .execute()
 })
 
+// 任务开始钩子
+gulp.on('task_start', function(e) {
+    gutil.log('Starting', '\'' + chalk.cyan(e.task) + '\'...');
+})
 
+// 任务结束钩子
+gulp.on('task_stop', function(e) {
+    var time = prettyTime(e.hrDuration);
+    gutil.log(
+      'Finished', '\'' + chalk.cyan(e.task) + '\'',
+      'after', chalk.magenta(time)
+    );
+  })
 
 // expose xtx
 module.exports = {
