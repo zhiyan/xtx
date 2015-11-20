@@ -1,0 +1,46 @@
+{
+  "name": "xtx",
+  "version": "1.0.0",
+  "description": "xuetangx自动化工具",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "xtx": "./bin/xtx"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhiyan/xtx.git"
+  },
+  "author": "zhiyan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zhiyan/xtx/issues"
+  },
+  "homepage": "https://github.com/zhiyan/xtx#readme",
+  "devDependencies": {
+    "cjson": "^0.3.2",
+    "del": "^2.1.0",
+    "event-stream": "^3.3.2",
+    "extend": "^3.0.0",
+    "fs-extra": "^0.26.2",
+    "glob": "^6.0.1",
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-connect": "^2.2.0",
+    "gulp-copy": "0.0.2",
+    "gulp-imagemin": "^2.4.0",
+    "gulp-load-plugins": "^1.1.0",
+    "gulp-postcss": "^6.0.1",
+    "gulp-sass": "^2.1.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.5.1",
+    "gulp-watch": "^4.3.5",
+    "imagemin-pngquant": "^4.2.0",
+    "requirejs": "2.1.15",
+    "rsync": "^0.4.0",
+    "run-sequence": "^1.1.4",
+    "u-help": "^1.0.0"
+  }
+}
