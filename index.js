@@ -16,12 +16,12 @@ var pkg = require("./package.json"),
     help = require("u-help"),
     chalk = require("chalk"),
     prettyTime = require('pretty-hrtime'),
+    browserSync = require('browser-sync').create(),
     sass = plugins.sass,
     sourcemaps = plugins.sourcemaps,
     autoprefixer = plugins.autoprefixer,
     uglify = plugins.uglify,
     imagemin = plugins.imagemin,
-    connect = plugins.connect,
     gutil = plugins.util
 
 /**
@@ -29,6 +29,9 @@ var pkg = require("./package.json"),
  * @type {Object}
  */
 var config = {
+
+    // 项目根目录
+    root : ".",
 
     // html目录
     html: "html",
@@ -125,7 +128,7 @@ gulp.task("build:css", function() {
         .pipe(autoprefixer(autoprefixerSetting))
         .pipe(sourcemaps.write("."))
         .pipe(gulp.dest(config.cssBuild))
-        .pipe(connect.reload())
+        .pipe(browserSync.stream())
 })
 
 /**
@@ -201,18 +204,6 @@ gulp.task("build", function(cb) {
     runSequence("clean", ["build:css", "build:js"], ["dist:css", "dist:js"], cb)
 })
 
-
-/**
- * 任务: 监听sass变动
- */
-gulp.task("watch:css", function() {
-    gulp.watch([
-        path.resolve(config.jsSource, "**/*.js"),
-        path.resolve(config.cssSource, "**/*.scss"),
-        path.resolve(config.imgSource, "**/*")
-    ], ["build:css"])
-})
-
 /**
  * 任务: 清理已编译文件
  */
@@ -224,22 +215,22 @@ gulp.task("clean", function() {
     ])
 })
 
-/**
- * 任务: 开启本地dev服务器
- */
-gulp.task("connect", function() {
-    connect.server({
-        port: 9000,
-        root: '.',
-        livereload: true,
-        middleware: middlewareBuilder
-    })
-})
 
 /**
  * 任务: 开启本地dev服务器，并监听scss变化,livereload
  */
-gulp.task('server', ['server', 'watch:css']);
+gulp.task('server', function() {
+    browserSync.init({
+        server: {
+            baseDir: ".",
+            directory: true,
+            middleware: middlewareBuilder()
+        },
+        port: 9000
+    })
+    gulp.watch(config.cssSource + "/**/*.scss", ["build:css"])
+    gulp.watch([config.html + "/**/*.html",config.jsSource + "/**/*.js",config.imgSource + "**/*"]).on("change", browserSync.reload)
+})
 
 
 /**
@@ -310,10 +301,10 @@ gulp.on('task_start', function(e) {
 gulp.on('task_stop', function(e) {
     var time = prettyTime(e.hrDuration);
     gutil.log(
-      'Finished', '\'' + chalk.cyan(e.task) + '\'',
-      'after', chalk.magenta(time)
+        'Finished', '\'' + chalk.cyan(e.task) + '\'',
+        'after', chalk.magenta(time)
     );
-  })
+})
 
 // expose xtx
 module.exports = {
@@ -393,26 +384,26 @@ function rjModules() {
  * @return {Array} 中间件数组
  * @todo 404 status
  */
-function middlewareBuilder(connect, opt) {
+function middlewareBuilder() {
 
     var middlewares = []
 
     // 文件不存在
-    middlewares.unshift(function(req, res, next) {
+    // middlewares.unshift(function(req, res, next) {
 
-        var url = path.join(opt.root, req.url)
+    //     var url = path.join(opt.root, req.url)
 
-        if (/favicon.ico$/.test(req.url)) {
-            return res.end("")
-        }
+    //     if (/favicon.ico$/.test(req.url)) {
+    //         return res.end("")
+    //     }
 
-        if (!fs.existsSync(url) || !fs.statSync(url).isFile()) {
-            console.log("Not Found: " + url)
-            return res.end("404")
-        }
+    //     if (!fs.existsSync(url) || !fs.statSync(url).isFile()) {
+    //         console.log("Not Found: " + url)
+    //         return res.end("404")
+    //     }
 
-        return next()
-    })
+    //     return next()
+    // })
 
     // 非GET请求处理
     middlewares.unshift(function(req, res, next) {
