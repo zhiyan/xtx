@@ -6,6 +6,7 @@ var pkg = require("./package.json"),
     runSequence = require('run-sequence').use(gulp),
     es = require('event-stream'),
     rjs = require("requirejs"),
+    md5 = require('blueimp-md5').md5,
     glob = require("glob"),
     del = require("del"),
     extend = require("extend"),
@@ -22,7 +23,8 @@ var pkg = require("./package.json"),
     autoprefixer = plugins.autoprefixer,
     uglify = plugins.uglify,
     imagemin = plugins.imagemin,
-    gutil = plugins.util
+    gutil = plugins.util,
+    upload = plugins.upload
 
 /**
  * 配置
@@ -31,7 +33,7 @@ var pkg = require("./package.json"),
 var config = {
 
     // 项目根目录
-    root : ".",
+    root: ".",
 
     // html目录
     html: "html",
@@ -79,8 +81,13 @@ var config = {
     devConfig: ".dev",
 
     // dev同步目录
-    devPath: "/edx/app/edxapp/edx-platform/lms/static/xuetangx"
+    devPath: "/edx/app/edxapp/edx-platform/lms/static/xuetangx",
+
+    // storage目录
+    storage: "http://10.0.0.113/upload/public_assets/xuetangx/"
 }
+
+var args = {}
 
 /**
  * 任务: 帮助
@@ -229,7 +236,7 @@ gulp.task('server', function() {
         port: 9000
     })
     gulp.watch(config.cssSource + "/**/*.scss", ["build:css"])
-    gulp.watch([config.html + "/**/*.html",config.jsSource + "/**/*.js",config.imgSource + "**/*"]).on("change", browserSync.reload)
+    gulp.watch([config.html + "/**/*.html", config.jsSource + "/**/*.js", config.imgSource + "**/*"]).on("change", browserSync.reload)
 })
 
 
@@ -254,6 +261,69 @@ gulp.task("release:js", function() {
  */
 gulp.task("release", function(cb) {
     runSequence("build", ["release:css", "release:js"], cb)
+})
+
+/**
+ * 任务: 上传
+ */
+gulp.task("upload", function() {
+    var filePath,
+        distPath,
+        pathObj,
+        content,
+        defaultDistPath = {
+            ".png": "images",
+            ".jpg": "images",
+            ".gif": "images",
+            ".jpeg": "images",
+            ".js": "js",
+            ".css": "style"
+        },
+        options = {
+            server: config.storage,
+            callback: function(err, data) {
+                if (err) {
+                    gutil.log('[error]' + err.toString());
+                } else {
+                    data = data.toString()
+                    data = JSON.parse(data)
+                    gutil.log(data.success ? data.url : data.error)
+                }
+            }
+        }
+
+    if (args.param.length && fs.existsSync(args.param[0])) {
+
+        filePath = args.param[0]
+        distPath = args.param[1]
+
+        pathObj = path.parse(filePath)
+
+        if (!distPath && pathObj.ext in defaultDistPath) {
+            distPath = defaultDistPath[pathObj.ext]
+        }
+
+        // get the content of file
+        content = fs.readFileSync(filePath).toString()
+
+        // md5
+        if (!~args.ctrl.indexOf("no-md5")) {
+            pathObj.name = md5(isBinary(content) ? +new Date() : content) + "." + pathObj.name
+        }
+
+        // rename base
+        pathObj.base = pathObj.name + pathObj.ext
+
+        // change upload dir from args
+        pathObj.dir = distPath
+
+        options.server += path.format(pathObj)
+
+        return gulp.src(path.join(filePath))
+            .pipe(upload(options));
+    } else {
+        gutil.log("[error]缺少参数或文件不存在")
+    }
 })
 
 /**
@@ -315,7 +385,10 @@ module.exports = {
  * xtx命令入口
  * @param  {String} cmd 命令名称
  */
-function run(cmd) {
+function run(cmd, opts) {
+
+    // 参数处理
+    formatArgs(opts, args)
 
     if (!cmd || !(cmd in gulp.tasks)) {
         cmd = "help"
@@ -388,23 +461,6 @@ function middlewareBuilder() {
 
     var middlewares = []
 
-    // 文件不存在
-    // middlewares.unshift(function(req, res, next) {
-
-    //     var url = path.join(opt.root, req.url)
-
-    //     if (/favicon.ico$/.test(req.url)) {
-    //         return res.end("")
-    //     }
-
-    //     if (!fs.existsSync(url) || !fs.statSync(url).isFile()) {
-    //         console.log("Not Found: " + url)
-    //         return res.end("404")
-    //     }
-
-    //     return next()
-    // })
-
     // 非GET请求处理
     middlewares.unshift(function(req, res, next) {
 
@@ -439,4 +495,46 @@ function middlewareBuilder() {
     })
 
     return middlewares;
+}
+
+/**
+ * 是否二进制文件
+ * @param  {String}  content 
+ * @return {Boolean}         
+ */
+function isBinary(content) {
+    var encoding = 'utf8';
+
+    // Detect encoding
+    for (var i = 0; i < 24; i++) {
+        var charCode = content.charCodeAt(i);
+        // 65533 is the unknown char
+        // 8 and below are control chars (e.g. backspace, null, eof, etc)
+        if (charCode === 65533 || charCode <= 8) {
+            encoding = 'binary';
+            break;
+        }
+    }
+
+    return (encoding === 'binary');
+}
+
+/**
+ * 格式化参数
+ * @param  {Array} args 
+ */
+function formatArgs(opts, args) {
+
+    var rtag = /^--/
+
+    args.param = []
+    args.ctrl = []
+
+    opts.forEach(function(value) {
+        if (rtag.test(value)) {
+            args.ctrl.push(value.replace(rtag, ""))
+        } else {
+            args.param.push(value)
+        }
+    })
 }

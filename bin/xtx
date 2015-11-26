@@ -2,10 +2,10 @@
 
 var cli = require("../index")
 
-cmd = process.argv[2]
+var cmd = process.argv[2]
 
 if( cmd ) {
-    return cli.run( cmd )
+    return cli.run( cmd, process.argv.slice(3) )
 } else {
     return cli.run( "help" )
 }
