@@ -1,5 +1,5 @@
 var pkg = require("./package.json"),
-    fs = require("fs"),
+    fs = require("fs-extra"),
     path = require("path"),
     gulp = require("gulp"),
     plugins = require("gulp-load-plugins")(),
@@ -103,6 +103,7 @@ gulp.task("help", function() {
             sync: '同步代码到开发机',
             server: '本地调试服务器',
             release: '发布',
+            upload: '上传文件到storage'
             // install: '安装组件',
             // update: '更新组件',
             // remove: '删除组件',

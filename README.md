@@ -35,3 +35,4 @@ xtx
 * sync: '同步代码到开发机',
 * server: '本地调试服务器',
 * release: '发布'
+* upload: '上传文件到storage'
