@@ -104,10 +104,10 @@ gulp.task("help", function() {
             server: '本地调试服务器',
             release: '发布',
             upload: '上传文件到storage'
-            // install: '安装组件',
-            // update: '更新组件',
-            // remove: '删除组件',
-            // publish: '发布组件'
+                // install: '安装组件',
+                // update: '更新组件',
+                // remove: '删除组件',
+                // publish: '发布组件'
         }
     })
 })
