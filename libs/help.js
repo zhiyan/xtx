@@ -10,6 +10,7 @@ function help(){
         "命令": {
             build: '构建代码',
             clean: '清理编译文件',
+            dist: '输出编译文件',
             img: '图片目录压缩',
             sync: '同步代码到开发机',
             server: '本地调试服务器',
