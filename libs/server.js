@@ -11,7 +11,7 @@ var fs = require("fs-extra"),
 
 
 gulp.task("buildStyle",function(){
-	buildStyle("server")
+	buildStyle(browserSync.reload)
 })
 
 function server() {
@@ -57,7 +57,7 @@ function middlewareBuilder() {
     })
 
     if( !config.compatible ){
-        
+
         // 旧版兼容
         middlewares.unshift(function(req, res, next) {
 

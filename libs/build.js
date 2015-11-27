@@ -7,7 +7,6 @@ var gulp = require("gulp"),
     sass = require("gulp-sass"),
     sourcemaps = require("gulp-sourcemaps"),
     gutil = require("gulp-util"),
-    browserSync = require("browser-sync"),
     rjs = require("requirejs"),
     glob = require("glob"),
     async = require("async"),
@@ -35,9 +34,6 @@ function buildStyle(cb) {
     }
 
     var callback = function() {
-    	if( cb === "server") {
-    		return
-    	}
         gutil.log("css编译完毕!")
         cb()
     }
@@ -51,7 +47,6 @@ function buildStyle(cb) {
         .pipe(autoprefixer(autoprefixerSetting))
         .pipe(sourcemaps.write("."))
         .pipe(gulp.dest(config.cssBuild))
-        .pipe(browserSync.stream())
 }
 
 /**
