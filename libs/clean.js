@@ -4,11 +4,12 @@
  */
 
 var del = require("del"),
-	config = require("../config"),
-	gutil = require("gulp-util")
+	util = require("../util"),
+	gutil = require("gulp-util"),
+	config = util.getConfig()
 
 function clean( cb ){
-
+	
 	cb = cb || gutil.noop
 
 	var callback = function(){

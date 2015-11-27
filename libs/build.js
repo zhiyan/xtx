@@ -2,8 +2,7 @@
  * 编译静态文件
  */
 
-var config = require("../config"),
-    gulp = require("gulp"),
+var gulp = require("gulp"),
     autoprefixer = require("gulp-autoprefixer"),
     sass = require("gulp-sass"),
     sourcemaps = require("gulp-sourcemaps"),
@@ -13,7 +12,9 @@ var config = require("../config"),
     glob = require("glob"),
     async = require("async"),
     clean = require("./clean").run,
-    dist = require("./dist").run
+    dist = require("./dist").run,
+    util = require("../util"),
+    config = util.getConfig()
 
 /**
  * 编译css文件
@@ -80,6 +81,7 @@ function buildScript(cb) {
 }
 
 function build(cb) {
+	
     cb = cb || gutil.noop
     async.series([
     	clean,

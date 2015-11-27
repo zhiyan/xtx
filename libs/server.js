@@ -3,10 +3,11 @@
  */
 
 var fs = require("fs-extra"),
-    config = require("../config"),
     gulp = require("gulp"),
     browserSync = require("browser-sync"),
-    buildStyle = require("./build").css
+    buildStyle = require("./build").css,
+    util = require("../util"),
+    config = util.getConfig()
 
 
 gulp.task("buildStyle",function(){
@@ -55,18 +56,22 @@ function middlewareBuilder() {
         return next()
     })
 
-    // 旧版兼容
-    middlewares.unshift(function(req, res, next) {
+    if( !config.compatible ){
+        
+        // 旧版兼容
+        middlewares.unshift(function(req, res, next) {
 
-        req.url = req.url.replace(/^\/static\//, "/src/")
-            .replace(/^\/pages2\//, "/html/")
+            req.url = req.url.replace(/^\/static\//, "/src/")
+                .replace(/^\/pages2\//, "/html/")
 
-        if (/^\/src\/css\/(.)*\.css(.map)?$/.test(req.url)) {
-            req.url = req.url.replace(/^\/src/, "/build")
-        }
+            if (/^\/src\/css\/(.)*\.css(.map)?$/.test(req.url)) {
+                req.url = req.url.replace(/^\/src/, "/build")
+            }
 
-        return next()
-    })
+            return next()
+        })
+    }
+
 
     return middlewares;
 }

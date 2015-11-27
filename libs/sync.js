@@ -2,27 +2,24 @@
  * 文件同步开发机
  */
 
-var config = require("../config"),
-	fs = require("fs-extra"),
-	path = require("path"),
-	cjson = require("cjson"),
+var path = require("path"),
 	extend = require("extend"),
-	rsync = require("rsync")
+	rsync = require("rsync"),
+    util = require("../util"),
+    config = util.getConfig()
 
 
 function sync(){
-	var devConfig = {},
-        dest,
+	var dest,
         setting = {
             flags: "avz",
             shell: "ssh"
         }
 
-    if (fs.existsSync(config.devConfig)) {
-        devConfig = cjson.load(config.devConfig)
-        dest = (devConfig.user || "root") + "@" + devConfig.host + ":" + (devConfig.path || config.devPath)
+    if (config.host) {
+        dest = config.user + "@" + config.host + ":" + config.devPath
     } else {
-        console.log("没有.dev配置文件")
+        console.log("无配置文件或没配置开发机host")
         return;
     }
 

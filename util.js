@@ -1,4 +1,24 @@
+var fs = require("fs-extra"),
+	path = require("path"),
+	extend = require("extend")
+
 module.exports = {
+
+	getConfig: function(){
+
+		var config = require("./config"),
+			configPath = path.join(process.cwd(), config.configFile ),
+			devPath = path.join(process.cwd(), config.devConfig)
+
+		if( fs.existsSync( configPath ) ){
+			extend(config, fs.readJsonSync(configPath))
+		}
+
+		if( fs.existsSync( devPath ) ){
+			extend(config, fs.readJsonSync(devPath))
+		}
+		return config
+	},
 
     /**
      * 格式化参数

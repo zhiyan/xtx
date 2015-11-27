@@ -24,7 +24,6 @@
     "blueimp-md5": "^1.1.1",
     "browser-sync": "^2.10.0",
     "chalk": "^1.1.1",
-    "cjson": "^0.3.2",
     "del": "^2.1.0",
     "event-stream": "^3.3.2",
     "extend": "^3.0.0",

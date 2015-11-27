@@ -2,12 +2,13 @@
  * 压缩图片
  */
 
-var config = require("../config"),
-    path = require("path"),
+var path = require("path"),
     gulp = require("gulp"),
     imagemin = require("gulp-imagemin"),
     pngquant = require("imagemin-pngquant"),
-    gutil = require("gulp-util")
+    gutil = require("gulp-util"),
+    util = require("../util"),
+    config = util.getConfig()
 
 
 function img() {

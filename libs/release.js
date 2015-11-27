@@ -5,9 +5,10 @@
 var async = require("async"),
     path = require("path"),
     gulp = require("gulp"),
-    config = require("../config"),
     gutil = require("gulp-util"),
-    build = require("./build").run
+    build = require("./build").run,
+    util = require("../util"),
+    config = util.getConfig()
 
 
 function releaseScript(cb) {

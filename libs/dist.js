@@ -2,13 +2,15 @@
  * 输出静态文件
  */
 
-var config = require("../config"),
-    gulp = require("gulp"),
+var gulp = require("gulp"),
     gutil = require("gulp-util"),
     postcss = require("gulp-postcss"),
     uglify = require("gulp-uglify"),
     es = require('event-stream'),
-    async = require("async")
+    async = require("async"),
+    util = require("../util"),
+    config = util.getConfig()
+
 
 /**
  * 输出css文件

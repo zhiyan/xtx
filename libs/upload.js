@@ -3,16 +3,15 @@
  * @augments --no-md5 不加MD5时间戳
  */
 
-var config = require("../config"),
-    util = require("../util"),
+var util = require("../util"),
     path = require("path"),
     fs = require("fs-extra"),
     gulp = require("gulp"),
     gutil = require("gulp-util"),
     up = require("gulp-upload"),
-    md5 = require('blueimp-md5').md5
-
-var args = util.args()
+    md5 = require('blueimp-md5').md5,
+    config = util.getConfig(),
+    args = util.args()
 
 /**
  * 上传主函数
