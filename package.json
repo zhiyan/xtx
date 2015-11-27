@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/zhiyan/xtx#readme",
   "devDependencies": {
+    "async": "^1.5.0",
     "blueimp-md5": "^1.1.1",
     "browser-sync": "^2.10.0",
     "chalk": "^1.1.1",
@@ -44,7 +45,6 @@
     "pretty-hrtime": "^1.0.1",
     "requirejs": "2.1.15",
     "rsync": "^0.4.0",
-    "run-sequence": "^1.1.4",
     "u-help": "^1.0.0"
   }
 }
