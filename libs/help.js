@@ -5,7 +5,7 @@
 var help = require("u-help"),
 	pkg = require("../package.json")
 
-function help(){
+function main(){
 	help.show('xtx v' + pkg.version, {
         "命令": {
             build: '构建代码',
@@ -22,5 +22,5 @@ function help(){
 }
 
 module.exports = {
-	run : help
+	run : main
 }

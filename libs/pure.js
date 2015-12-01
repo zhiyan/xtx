@@ -29,7 +29,7 @@ gulp.task("js", function(){
 
 function main(){
     gulp.start(["css","js"])
-    gulp.watch(["**/*.js","**/*.css","!dist/**"],["css","js"])
+    gulp.watch(["**/*.js","**/*.css","**/*.scss","!dist/**"],["css","js"])
 }
 
 module.exports = {
