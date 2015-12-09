@@ -13,7 +13,8 @@ var gulp = require("gulp"),
     clean = require("./clean").run,
     dist = require("./dist").run,
     util = require("../util"),
-    config = util.getConfig()
+    config = util.getConfig(),
+    includePaths = require("bourbon").includePaths
 
 /**
  * 编译css文件
@@ -25,7 +26,7 @@ function buildStyle(cb) {
     var sassSetting = {
         "outputStyle": "compressed",
         "precision": 10,
-        "includePaths": [config.cssSource]
+        "includePaths": [config.cssSource].concat(includePaths)
     }
 
     var autoprefixerSetting = {

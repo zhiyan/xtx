@@ -30,7 +30,6 @@ function server() {
 /**
  * 本地dev服务器中间件
  * @return {Array} 中间件数组
- * @todo 404 status
  */
 function middlewareBuilder() {
 

@@ -28,11 +28,18 @@ xtx
 
 ### 基本命令
 
-* build: '构建代码, 编译css和js生成build和dist两个目录,其中build下js只打包不压缩, dist下是压缩混淆后代码',
-* clean: '清理编译文件',
-* img: '图片目录压缩, 压缩images到图片目录',
-* watch: '监视sass代码修改',
-* sync: '同步代码到开发机',
-* server: '本地调试服务器',
+* build: '构建代码, 编译css和js生成build和dist两个目录,其中build下js只打包不压缩, dist下是压缩混淆后代码'
+* dist: '输出代码，并压缩混淆js文件'
+* clean: '清理编译文件'
+* sync: '同步代码到开发机'
+* server: '本地调试服务器'
 * release: '发布'
 * upload: '上传文件到storage'
+* img: '图片目录压缩, 压缩images到图片目录'
+* pure: '简洁模式'
+
+### 子命令
+build:css 编译css
+build:js 编译js
+dist:js 输出js
+dist:css 输出css
