@@ -16,7 +16,8 @@ function main(){
             server: '本地调试服务器',
             release: '发布',
             upload: '上传文件到storage',
-            pure : '简洁模式'
+            pure : '简洁模式',
+            base64 : 'base64图片'
         }
     })
 }

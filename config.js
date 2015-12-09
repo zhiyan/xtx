@@ -1,9 +1,9 @@
 module.exports = {
 
     // 是否兼容模式
-    "compatible" : false,
+    "compatible": false,
 
-	// 项目根目录
+    // 项目根目录
     "root": ".",
 
     // html目录
@@ -58,18 +58,27 @@ module.exports = {
     "devPath": "/edx/app/edxapp/edx-platform/lms/static/xuetangx",
 
     // dev开发机用户名
-    "user" : "root",
+    "user": "root",
 
     // storage目录
     "storage": "http://10.0.0.113/upload/public_assets/xuetangx/",
 
     // 扩展名文件对应storage默认目录
-    "defaultStoragePath" : {
+    "defaultStoragePath": {
         ".png": "images",
         ".jpg": "images",
         ".gif": "images",
         ".jpeg": "images",
         ".js": "js",
         ".css": "style"
+    },
+
+    // 图片mimetype
+    "mime": {
+        "jpg": "image/jpeg",
+        "jpeg": "image/jpeg",
+        "gif": "image/gif",
+        "png": "image/png",
+        "svg" : "image/svg-xml"
     }
 }
