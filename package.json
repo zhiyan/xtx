@@ -1,6 +1,6 @@
 {
   "name": "xtx",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "description": "xuetangx自动化工具",
   "main": "index.js",
   "scripts": {
