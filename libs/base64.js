@@ -18,7 +18,7 @@ function base64(){
 	if( param.length ){
 		filePath = param[0]
 		if(!fs.existsSync(filePath)){
-			gutil.log("文件不存在")
+			gutil.log("文件不存在!")
 			return false
 		}
 		ext = path.parse(filePath).ext.substring(1)
@@ -26,6 +26,8 @@ function base64(){
 			res = ["data:",config.mime[ext],";base64,"]
 			res.push(fs.readFileSync(filePath,'base64'))
 			console.log(res.join(""))
+		}else{
+			gutil.log("不支持的图片格式!")
 		}
 		
 	}else{
