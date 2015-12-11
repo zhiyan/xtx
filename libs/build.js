@@ -14,7 +14,8 @@ var gulp = require("gulp"),
     dist = require("./dist").run,
     util = require("../util"),
     config = util.getConfig(),
-    includePaths = require("bourbon").includePaths
+    includePaths = require("bourbon").includePaths,
+    args = util.args()
 
 /**
  * 编译css文件
@@ -95,23 +96,30 @@ function build(cb) {
  * @todo  重写
  */
 function rjModules() {
-    var dirAppSrc = glob.sync(config.jsSource + "/appSrc/*.js");
-    var dirSpecial = glob.sync(config.jsSource + "/special/*.js");
-    var dirStandalone = glob.sync(config.jsSource + "/standalone/*.js");
+    var special = ~args.ctrl.indexOf("special")
+    var deep = (~args.ctrl.indexOf("all") || special ) ? "**/*.js" : "*.js"
+    var dirAppSrc = glob.sync(config.jsSource + "/appSrc/" + deep);
+    var dirSpecial = glob.sync(config.jsSource + "/special/" + deep);
+    var dirStandalone = glob.sync(config.jsSource + "/standalone/" + deep);
     var allArr = [];
     var i = 0,
         l;
 
     var arrForReturn = [];
-    for (i = 0, l = dirAppSrc.length; i < l; i++) {
-        allArr.push(dirAppSrc[i].match(/(appSrc\/.*)\.js/)[1]);
+
+    if( !special ){
+        for (i = 0, l = dirAppSrc.length; i < l; i++) {
+            allArr.push(dirAppSrc[i].match(/(appSrc\/.*)\.js/)[1]);
+        }
+        for (i = 0, l = dirStandalone.length; i < l; i++) {
+            allArr.push(dirStandalone[i].match(/(standalone\/.*)\.js/)[1]);
+        }
     }
+    
     for (i = 0, l = dirSpecial.length; i < l; i++) {
         allArr.push(dirSpecial[i].match(/(special\/.*)\.js/)[1]);
     }
-    for (i = 0, l = dirStandalone.length; i < l; i++) {
-        allArr.push(dirStandalone[i].match(/(standalone\/.*)\.js/)[1]);
-    }
+    
     for (i = 0, l = allArr.length; i < l; i++) {
         var json = {};
         json.name = allArr[i];

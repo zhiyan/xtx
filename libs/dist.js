@@ -9,7 +9,8 @@ var gulp = require("gulp"),
     es = require('event-stream'),
     async = require("async"),
     util = require("../util"),
-    config = util.getConfig()
+    config = util.getConfig(),
+    args = util.args()
 
 
 /**
@@ -47,6 +48,24 @@ function distScript(cb) {
     }
 
     gutil.log("开始压缩js...")
+
+    if( ~args.ctrl.indexOf("all") ){
+        return gulp.src([
+                config.jsBuild + "/**/*.js", 
+                "!" + config.jsBuild + "/lib/**/*.js",
+                "!" + config.jsBuild + "/modules/**/*.js",
+                ])
+                .on("end",callback)
+                .pipe(uglify())
+                .pipe(gulp.dest(config.jsDist))
+    }
+
+    if( ~args.ctrl.indexOf("special") ){
+        return gulp.src(config.jsBuild + "/special/**/*.js")
+                .on("end",callback)
+                .pipe(uglify())
+                .pipe(gulp.dest(config.jsDist))
+    }
 
     return es.merge(
         gulp.src(config.jsBuild + "/appSrc/*.js")
