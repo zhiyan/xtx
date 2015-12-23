@@ -3,14 +3,15 @@
  */
 
 var path = require("path"),
-	extend = require("extend"),
-	rsync = require("rsync"),
+    extend = require("extend"),
+    rsync = require("rsync"),
+    gulp = require("gulp"),
     util = require("../util"),
     config = util.getConfig()
 
 
-function sync(){
-	var dest,
+function sync() {
+    var dest,
         setting = {
             flags: "avz",
             shell: "ssh"
@@ -23,23 +24,19 @@ function sync(){
         return;
     }
 
-    // css
-    rsync
-        .build(extend({
-            source: path.resolve(config.cssDist, "*.css"),
-            destination: dest
-        }, setting))
-        .execute()
-
-    // js
-    rsync.build(extend({
-            source: path.resolve(config.jsDist, "appSrc", "*.js"),
-            destination: dest + "/js"
-        }, setting))
-        .execute()
+    gulp.src(path.resolve(config.jsDist, "appSrc", "*.js"))
+        .pipe(gulp.dest(path.resolve(config.dist, "js")))
+        .on("end", function() {
+            rsync
+                .build(extend({
+                    source: [path.resolve(config.cssDist, "*.css"), path.resolve(config.dist, "js")],
+                    destination: dest
+                }, setting))
+                .execute()
+        })
 
 }
 
 module.exports = {
-	run : sync
+    run: sync
 }
