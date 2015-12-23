@@ -6,6 +6,8 @@ var path = require("path"),
     extend = require("extend"),
     rsync = require("rsync"),
     gulp = require("gulp"),
+    gutil = require("gulp-util"),
+    del = require("del"),
     util = require("../util"),
     config = util.getConfig()
 
@@ -32,9 +34,15 @@ function sync() {
                     source: [path.resolve(config.cssDist, "*.css"), path.resolve(config.dist, "js")],
                     destination: dest
                 }, setting))
-                .execute()
+                .execute(clear)
         })
 
+}
+
+function clear() {
+    return del(path.resolve(config.dist, "js")).then(function() {
+        gutil.log("同步完成")
+    })
 }
 
 module.exports = {
