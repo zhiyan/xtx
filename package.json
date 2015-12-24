@@ -19,7 +19,7 @@
     "url": "https://github.com/zhiyan/xtx/issues"
   },
   "homepage": "https://github.com/zhiyan/xtx#readme",
-  "devDependencies": {
+  "dependencies": {
     "async": "^1.5.0",
     "blueimp-md5": "^1.1.1",
     "bourbon": "^4.2.6",
