@@ -2,7 +2,8 @@
  * 输出静态文件
  */
 
-var gulp = require("gulp"),
+var path = require("path"),
+    gulp = require("gulp"),
     gutil = require("gulp-util"),
     postcss = require("gulp-postcss"),
     uglify = require("gulp-uglify"),
@@ -48,6 +49,13 @@ function distScript(cb) {
     }
 
     gutil.log("开始压缩js...")
+
+    if( !!config.jsDistFilter ){
+        return gulp.src([path.join(config.jsBuild,config.jsDistFilter,"**/*.js")])
+                .on("end",callback)
+                .pipe(uglify())
+                .pipe(gulp.dest(config.jsDist))
+    }
 
     if( ~args.ctrl.indexOf("all") ){
         return gulp.src([

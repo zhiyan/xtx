@@ -70,7 +70,7 @@ function buildScript(cb) {
         optimizeCss: "none",
         dir: config.jsBuild,
         optimize: "none",
-        modules: rjModules()
+        modules: typeof config.module === "function" ? config.module(config.jsSource, glob, args) : (config.module || [])
     }, function() {
         gutil.log("js编译完毕!")
         cb()
@@ -78,70 +78,16 @@ function buildScript(cb) {
 }
 
 function build(cb) {
-	
+
     cb = cb || gutil.noop
     async.series([
-    	clean,
+        clean,
         buildStyle,
         buildScript,
         dist
     ], function() {
         cb()
     })
-}
-
-/**
- * rjs模块数组构造器
- * @return {Array} 
- * @todo  重写
- */
-function rjModules() {
-    var special = ~args.ctrl.indexOf("special")
-    var deep = (~args.ctrl.indexOf("all") || special ) ? "**/*.js" : "*.js"
-    var dirAppSrc = glob.sync(config.jsSource + "/appSrc/" + deep);
-    var dirSpecial = glob.sync(config.jsSource + "/special/" + deep);
-    var dirStandalone = glob.sync(config.jsSource + "/standalone/" + deep);
-    var allArr = [];
-    var i = 0,
-        l;
-
-    var arrForReturn = [];
-
-    if( !special ){
-        for (i = 0, l = dirAppSrc.length; i < l; i++) {
-            allArr.push(dirAppSrc[i].match(/(appSrc\/.*)\.js/)[1]);
-        }
-        for (i = 0, l = dirStandalone.length; i < l; i++) {
-            allArr.push(dirStandalone[i].match(/(standalone\/.*)\.js/)[1]);
-        }
-    }
-    
-    for (i = 0, l = dirSpecial.length; i < l; i++) {
-        allArr.push(dirSpecial[i].match(/(special\/.*)\.js/)[1]);
-    }
-    
-    for (i = 0, l = allArr.length; i < l; i++) {
-        var json = {};
-        json.name = allArr[i];
-        if (json.name === "appSrc/appCommon") {
-            json.name = "appCommon";
-            json.exclude = ["coffee-script", "normalize"];
-        } else if (json.name === "appSrc/fragmentIpad") {
-            json.exclude = ["coffee-script", "normalize"];
-        } else if (json.name === "appSrc/analyticsmobile") {
-            json.name = "analyticsmobile";
-            json.exclude = ["coffee-script", "normalize", "zepto"];
-        } else if (json.name === "appSrc/migu") {
-            json.exclude = ["coffee-script", "normalize"];
-        } else if (json.name.indexOf("standalone") !== -1) {
-            json.exclude = ["coffee-script", "normalize"];
-        } else {
-            json.exclude = ["jquery", "angular", "appCommon", "normalize", "coffee-script", "cs", "css", "text", "css-builder"];
-        }
-        arrForReturn.push(json);
-        json = null;
-    }
-    return arrForReturn;
 }
 
 module.exports = {

@@ -42,6 +42,9 @@ module.exports = {
     // 图片输出目录
     "imgDist": "dist/images",
 
+    // 输出过滤
+    "jsDistFilter" : "",
+
     // release目录
     "release": "/edx/app/edxapp/edx-platform/lms/static/xuetangx",
 
@@ -49,7 +52,7 @@ module.exports = {
     "requireConfig": "src/script/lib/requirejsPlugin/rjConfig.js",
 
     // 通用配置文件
-    "configFile": "config.json",
+    "configFile": "config.js",
 
     // 开发机配置文件
     "devConfig": ".dev",

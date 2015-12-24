@@ -11,7 +11,7 @@ module.exports = {
 			devPath = path.join(process.cwd(), config.devConfig)
 
 		if( fs.existsSync( configPath ) ){
-			extend(config, fs.readJsonSync(configPath))
+			extend(config, require(configPath))
 		}
 
 		if( fs.existsSync( devPath ) ){
