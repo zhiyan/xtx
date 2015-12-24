@@ -35,7 +35,6 @@ xtx
 * server: '本地调试服务器'
 * release: '发布'
 * upload: '上传文件到storage'
-* img: '图片目录压缩, 压缩images到图片目录'
 * pure: '简洁模式'
 * base64: 'base64图片'
 
