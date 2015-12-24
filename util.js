@@ -17,6 +17,11 @@ module.exports = {
 		if( fs.existsSync( devPath ) ){
 			extend(config, fs.readJsonSync(devPath))
 		}
+
+        // root => source
+        config.jsRoot = config.jsRoot || config.jsSource
+        config.cssRoot = config.cssRoot || config.cssSource
+        
 		return config
 	},
 

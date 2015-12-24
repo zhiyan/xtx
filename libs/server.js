@@ -23,7 +23,7 @@ function server() {
         },
         port: 9000
     })
-    gulp.watch(config.cssSource + "/**/*.scss", ["buildStyle"])
+    gulp.watch(config.cssRoot + "/**/*.scss", ["buildStyle"])
     gulp.watch([config.html + "/**/*.html", config.jsSource + "/**/*.js"]).on("change", browserSync.reload)
 }
 

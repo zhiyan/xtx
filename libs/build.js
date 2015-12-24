@@ -2,7 +2,8 @@
  * 编译静态文件
  */
 
-var gulp = require("gulp"),
+var path = require("path"),
+    gulp = require("gulp"),
     autoprefixer = require("gulp-autoprefixer"),
     sass = require("gulp-sass"),
     sourcemaps = require("gulp-sourcemaps"),
@@ -27,7 +28,7 @@ function buildStyle(cb) {
     var sassSetting = {
         "outputStyle": "compressed",
         "precision": 10,
-        "includePaths": [config.cssSource].concat(includePaths)
+        "includePaths": [config.cssRoot].concat(includePaths)
     }
 
     var autoprefixerSetting = {
@@ -42,7 +43,7 @@ function buildStyle(cb) {
 
     gutil.log("开始编译css...")
 
-    return gulp.src(config.cssSource + "/app/**/*.scss")
+    return gulp.src( path.join(config.cssSource, "/**/*.scss"))
         .on("end", callback)
         .pipe(sourcemaps.init())
         .pipe(sass(sassSetting).on("error", sass.logError))

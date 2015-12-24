@@ -9,6 +9,10 @@ module.exports = {
     // html目录
     "html": "html",
 
+    "cssRoot" : "",
+
+    "jsRoot" : "",
+
     // css源目录
     "cssSource": "src/sass",
 
