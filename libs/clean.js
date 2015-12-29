@@ -3,27 +3,27 @@
  * @description 删除build和dist目录
  */
 
-var del = require("del"),
-	util = require("../util"),
-	gutil = require("gulp-util"),
-	config = util.getConfig()
+var del = require('del'),
+    util = require('../util'),
+    gutil = require('gulp-util'),
+    config = util.getConfig()
 
-function clean( cb ){
-	
-	cb = cb || gutil.noop
+function clean(cb) {
 
-	var callback = function(){
-		gutil.log("清理目录完成")
-		cb()
-	}
+    cb = cb || gutil.noop
 
-	gutil.log("正在清理目录")
-	return del([
+    var callback = function() {
+        gutil.log('清理目录完成')
+        cb()
+    }
+
+    gutil.log('正在清理目录')
+    return del([
         config.build,
         config.dist
     ]).then(callback)
 }
 
 module.exports = {
-	run: clean
+    run: clean
 }

@@ -2,29 +2,29 @@
  * 本地开发服务器
  */
 
-var fs = require("fs-extra"),
-    gulp = require("gulp"),
-    browserSync = require("browser-sync"),
-    buildStyle = require("./build").css,
-    util = require("../util"),
+var fs = require('fs-extra'),
+    gulp = require('gulp'),
+    browserSync = require('browser-sync'),
+    buildStyle = require('./build').css,
+    util = require('../util'),
     config = util.getConfig()
 
 
-gulp.task("buildStyle",function(){
-	buildStyle(browserSync.reload)
+gulp.task('buildStyle', function() {
+    buildStyle(browserSync.reload)
 })
 
 function server() {
     browserSync.init({
         server: {
-            baseDir: ".",
+            baseDir: '.',
             directory: true,
             middleware: middlewareBuilder()
         },
         port: 9000
     })
-    gulp.watch(config.cssRoot + "/**/*.scss", ["buildStyle"])
-    gulp.watch([config.html + "/**/*.html", config.jsSource + "/**/*.js"]).on("change", browserSync.reload)
+    gulp.watch(config.cssRoot + '/**/*.scss', ['buildStyle'])
+    gulp.watch([config.html + '/**/*.html', config.jsSource + '/**/*.js']).on('change', browserSync.reload)
 }
 
 /**
@@ -40,7 +40,7 @@ function middlewareBuilder() {
 
         if (['POST', 'PUT', 'DELETE'].indexOf(req.method.toUpperCase()) !== -1) {
             if (fs.existsSync(req.url) && fs.statSync(req.url).isFile()) {
-                return res.end(fs.readFileSync(req.url));
+                return res.end(fs.readFileSync(req.url))
             }
         }
 
@@ -50,21 +50,21 @@ function middlewareBuilder() {
     // mock处理
     middlewares.unshift(function(req, res, next) {
 
-        req.url = req.url.replace(/^\/mock\//, "/")
+        req.url = req.url.replace(/^\/mock\//, '/')
 
         return next()
     })
 
-    if( !config.compatible ){
+    if (!config.compatible) {
 
         // 旧版兼容
         middlewares.unshift(function(req, res, next) {
 
-            req.url = req.url.replace(/^\/static\//, "/src/")
-                .replace(/^\/pages2\//, "/html/")
+            req.url = req.url.replace(/^\/static\//, '/src/')
+                .replace(/^\/pages2\//, '/html/')
 
             if (/^\/src\/css\/(.)*\.css(.map)?$/.test(req.url)) {
-                req.url = req.url.replace(/^\/src/, "/build")
+                req.url = req.url.replace(/^\/src/, '/build')
             }
 
             return next()
@@ -72,7 +72,7 @@ function middlewareBuilder() {
     }
 
 
-    return middlewares;
+    return middlewares
 }
 
 module.exports = {

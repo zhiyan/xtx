@@ -3,12 +3,12 @@
  * @augments --no-md5 不加MD5时间戳
  */
 
-var util = require("../util"),
-    path = require("path"),
-    fs = require("fs-extra"),
-    gulp = require("gulp"),
-    gutil = require("gulp-util"),
-    up = require("gulp-upload"),
+var util = require('../util'),
+    path = require('path'),
+    fs = require('fs-extra'),
+    gulp = require('gulp'),
+    gutil = require('gulp-util'),
+    up = require('gulp-upload'),
     md5 = require('blueimp-md5').md5,
     config = util.getConfig(),
     args = util.args()
@@ -16,7 +16,7 @@ var util = require("../util"),
 /**
  * 上传主函数
  */
-function upload(){
+function upload() {
     var filePath,
         distPath,
         pathObj,
@@ -38,8 +38,8 @@ function upload(){
         // md5
         // 二进制文件每次根据时间戳生成最新md5值,
         // 文本文件根据内容生成md5
-        if (!~args.ctrl.indexOf("no-md5")) {
-            pathObj.name = md5(util.isBinary(content) ? +new Date() : content) + "." + pathObj.name
+        if (!~args.ctrl.indexOf('no-md5')) {
+            pathObj.name = md5(util.isBinary(content) ? +new Date() : content) + '.' + pathObj.name
         }
 
         // 文件名覆盖
@@ -54,7 +54,7 @@ function upload(){
                 callback: callback
             }))
     } else {
-        gutil.log("[error]缺少参数或文件不存在")
+        gutil.log('[error]缺少参数或文件不存在')
     }
 }
 
@@ -62,9 +62,9 @@ function upload(){
  * 上传完成回调函数
  * @description 显示上传后的真实路径
  */
-function callback(err,data){
+function callback(err, data) {
     if (err) {
-        gutil.log('[error]' + err.toString());
+        gutil.log('[error]' + err.toString())
     } else {
         data = data.toString()
         data = JSON.parse(data)
