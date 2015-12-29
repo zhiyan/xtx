@@ -38,7 +38,6 @@
     "gulp-uglify": "^1.5.1",
     "gulp-upload": "0.0.1",
     "gulp-util": "^3.0.7",
-    "gulp-watch": "^4.3.5",
     "requirejs": "2.1.15",
     "rsync": "^0.4.0",
     "u-help": "^1.0.0"
