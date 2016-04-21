@@ -64,7 +64,7 @@ function buildScript(cb) {
     rjs.optimize({
         appDir: config.jsSource,
         baseUrl: '.',
-        stubModules: ['cs'],
+        stubModules: ['cs', 'jsx', 'text', 'JSXTransformer'],
         mainConfigFile: config.requireConfig,
         skipModuleInsertion: false,
         wrapShim: true,
